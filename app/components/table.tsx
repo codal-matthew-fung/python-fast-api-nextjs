@@ -36,11 +36,14 @@ interface TableProps {
 }
 
 type HandlePaginationParams = {page: number}
+type fieldName = keyof Book
 export const Table = ({data}: TableProps) => {
     const searchParams = useSearchParams();
     const path = usePathname();
     const router = useRouter();
     const current_page = parseInt(searchParams.get('page') ?? '1')
+    const sort_by_field = searchParams.get('sort_by_field') ?? 'none';
+    const sort_by = searchParams.get('sort_by') ?? 'ASC';
     
     const handlePagination = ({page}: HandlePaginationParams) => {
         const newSearchParams = new URLSearchParams(searchParams);
@@ -50,6 +53,16 @@ export const Table = ({data}: TableProps) => {
         router.replace(`${path}?${newSearchParams.toString()}`)
     }
 
+    const handleSort = ({fieldToSort, direction}: {fieldToSort: fieldName, direction: 'ASC' | 'DESC'}) => {
+        const newSearchParams = new URLSearchParams(searchParams);
+
+        newSearchParams.set('sort_by_field', fieldToSort.toString());
+
+        newSearchParams.set('sort_by', direction)
+
+        router.replace(`${path}?${newSearchParams.toString()}`)
+    }
+    // TODO: Update UI to be less ugly
     return (
         <>
         <div className="mb-20">
@@ -72,7 +85,12 @@ export const Table = ({data}: TableProps) => {
           <thead>
             <tr className="bg-zinc-100 border-b-zinc-900 border-zinc-600">
               {
-                Object.keys(data?.books?.[0]).map((key) => (<th key={key} className={`text-md px-8 py-4 font-semibold text-zinc-600 align-bottom text-left ${key.includes('isbn') ? 'uppercase' : 'capitalize' }`}>{key.replaceAll('_', ' ')}</th>))
+                Object.keys(data?.books?.[0]).map((key) => {
+                    return (
+                        <th key={key} className={`text-md px-8 py-4 font-semibold text-zinc-600 align-bottom text-left`}>
+                        <button className={`${key.includes('isbn') ? 'uppercase' : 'capitalize' }${sort_by_field == key ? ' font-bold': ''}`} onClick={() => handleSort({fieldToSort: key, direction: sort_by == 'ASC' ? 'DESC' : 'ASC'})}>{key.replaceAll('_', ' ')} {sort_by_field === key && sort_by}</button></th>
+                    )
+                })
               }
             </tr>
           </thead>
