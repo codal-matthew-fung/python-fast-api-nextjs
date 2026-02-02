@@ -34,21 +34,17 @@ export interface Data {
 interface TableProps {
     data: Data
 }
+
+type HandlePaginationParams = {page: number}
 export const Table = ({data}: TableProps) => {
     const searchParams = useSearchParams();
     const path = usePathname();
     const router = useRouter();
-    const current_page = searchParams.get('page') ?? 1
+    const current_page = parseInt(searchParams.get('page') ?? '1')
     
-    const handlePagination = ({current_page, next}: {current_page: string, next: boolean}) => {
-        let page = parseInt(current_page);
-        const newSearchParams = new URLSearchParams(searchParams)
-        if (next) {
-            page += 1;
-        } else {
-            page -= 1;
-        }
-
+    const handlePagination = ({page}: HandlePaginationParams) => {
+        const newSearchParams = new URLSearchParams(searchParams);
+        
         newSearchParams.set('page', page.toString())
 
         router.replace(`${path}?${newSearchParams.toString()}`)
@@ -61,8 +57,15 @@ export const Table = ({data}: TableProps) => {
           <p className="">Total Pages: <span className="font-bold">{data.metadata.total_pages}</span></p>
           <p className="">Current Page: <span className="font-bold">{data.metadata.current_page}</span></p>
           <ul className="inline-flex gap-2">
-          <li><button onClick={() =>handlePagination({'current_page': current_page.toString(), next: false})}>Previous Page</button></li>
-          <li><button onClick={() =>handlePagination({'current_page': current_page.toString(), next: true})}>Next Page</button></li>
+            {current_page !== 1 && (
+                <li><button onClick={() =>handlePagination({page: 1})}>{'<<'}</button></li>
+            )}  
+            <li><button onClick={() =>handlePagination({page: current_page - 1})}>Previous Page</button></li>
+            <li className="font-bold text-red-500">{current_page}</li>
+            <li><button onClick={() =>handlePagination({page: current_page + 1})}>Next Page</button></li>
+            {current_page !== data.metadata.total_pages && (
+                <li><button onClick={() =>handlePagination({page: data.metadata.total_pages})}>{'>>'}</button></li>
+            )}
           </ul>
         </div>
         <table className="rounded-sm w-full max-w-full">
