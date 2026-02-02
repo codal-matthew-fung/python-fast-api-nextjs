@@ -16,7 +16,7 @@ export interface Data {
   }
   
   export interface Book {
-    [k: string]: unknown
+    [k: string]: number | string
     bookID: number
     title: string
     authors: string
