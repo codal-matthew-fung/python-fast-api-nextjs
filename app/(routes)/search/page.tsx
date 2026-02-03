@@ -1,8 +1,8 @@
 import { Table } from "@/app/components/table"
 import { Suspense } from "react"
-import { getData } from "../utils"
-import { Endpoints } from "../globals"
-import { SearchForm } from "../components/search"
+import { getData } from "@/app/utils"
+import { Endpoints } from "@/app/globals"
+import { SearchForm } from "@/app/components/search"
 
 interface SearchParams {
     field?: string,
@@ -27,12 +27,8 @@ export default async function Search (props: SearchProps) {
     if (field) {
       params[field] = term
     }
-    
-    
 
     const data = await getData({'params': params, endpoint: Endpoints.search})
-
-    console.log(data)
 
     return (
         <div className="max-w-6xl mx-auto px-4 py-20">
