@@ -1,4 +1,4 @@
-import { Table } from "@/app/components/table"
+import { Data, Table } from "@/app/components/table"
 import { Suspense } from "react"
 import { getData } from "@/app/utils"
 import { Endpoints } from "@/app/globals"
@@ -28,7 +28,7 @@ export default async function Search (props: SearchProps) {
       params[field] = term
     }
 
-    const data = await getData({'params': params, endpoint: Endpoints.search})
+    const data = await getData({'params': params, endpoint: Endpoints.search}) as Data
 
     return (
         <div className="max-w-6xl mx-auto px-4 py-20">

@@ -4,32 +4,32 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation"
 export interface Data {
     metadata: Metadata
     books: Book[]
-  }
-  
-  export interface Metadata {
-    total_count: number
-    total_pages: number
-    current_page: number
-    page_count: number
-    has_next_page: boolean
-    has_prev_page: boolean
-  }
-  
-  export interface Book {
-    [k: string]: number | string
-    bookID: number
-    title: string
-    authors: string
-    average_rating: number
-    isbn: string
-    isbn13: number
-    language_code: string
-    num_pages: number
-    ratings_count: number
-    text_reviews_count: number
-    publication_date: string
-    publisher: string
-  }
+}
+
+export interface Metadata {
+  total_count: number
+  total_pages: number
+  current_page: number
+  page_count: number
+  has_next_page: boolean
+  has_prev_page: boolean
+}
+
+export interface Book {
+  [k: string]: number | string
+  bookID: number
+  title: string
+  authors: string
+  average_rating: number
+  isbn: string
+  isbn13: number
+  language_code: string
+  num_pages: number
+  ratings_count: number
+  text_reviews_count: number
+  publication_date: string
+  publisher: string
+}
 
 interface TableProps {
     data: Data
