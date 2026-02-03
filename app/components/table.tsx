@@ -1,4 +1,5 @@
 'use client';
+import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 
 export interface Data {
@@ -123,7 +124,7 @@ export const Table = ({data}: TableProps) => {
                             value = book.language_code.toUpperCase()
                         }
                         return (
-                            <td key={`${book.isbn}-${key}`} className="px-8 py-4 text-zinc-500 font-medium">{value}</td>
+                            <td key={`${book.isbn}-${key}`} className={`px-8 py-4 text-zinc-500 ${key === 'title' ? 'font-bold hover:underline' : 'font-normal'}`}>{key === 'title' ? <Link href={`/book/${book.isbn}`}>{value}</Link> : value}</td>
                         )
                     })
                   }

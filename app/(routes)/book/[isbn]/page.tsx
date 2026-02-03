@@ -1,8 +1,7 @@
-import { Book, Table } from "@/app/components/table"
-import { Fragment, Suspense } from "react"
+import { Book } from "@/app/components/table"
+import { Fragment } from "react"
 import { getData } from "@/app/utils"
 import { Endpoints } from "@/app/globals"
-import { SearchForm } from "@/app/components/search"
 
 
 export default async function GetBook ({params}: {params: Promise<{isbn: string}>}) {
