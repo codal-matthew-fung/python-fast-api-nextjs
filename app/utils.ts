@@ -3,7 +3,6 @@ import { Endpoints } from "./globals";
 
 export const getData = async ({params, endpoint}: {params: Record<string, string | undefined>, endpoint: Endpoints}) => {
     const fetchURL = new URL(endpoint);
-    console.log({params, endpoint})
     if (endpoint == Endpoints.book && Object.hasOwn(params, 'isbn')) {
       fetchURL.href = `${endpoint}/${params?.isbn}`
       console.log(fetchURL.href)
