@@ -1,4 +1,4 @@
-import { Book } from "@/app/components/table"
+import type {Book} from "@/app/types/data"
 import { Fragment } from "react"
 import { getData } from "@/app/utils"
 import { Endpoints } from "@/app/globals"
@@ -7,12 +7,9 @@ import { Endpoints } from "@/app/globals"
 export default async function GetBook ({params}: {params: Promise<{isbn: string}>}) {
     const {isbn} = await params
 
-    console.log(isbn)
     const fetchParams: Record<string, string | undefined> = {isbn}
 
     const book = await getData({'params': fetchParams, endpoint: Endpoints.book}) as Book
-
-    console.log(Object.keys(book))
 
     return (
         <div className="max-w-6xl mx-auto px-4 py-20">
@@ -22,7 +19,7 @@ export default async function GetBook ({params}: {params: Promise<{isbn: string}
               {Object.entries(book)?.map(([key, value]) => (
                 <Fragment key={`${book.isbn}-${key}`}>
                   <dt className="font-bold capitalize">{key}:</dt>
-                  <dd className="mb-2">{value}</dd>
+                  <dd className="mb-2">{value?.toString()}</dd>
                 </Fragment>
               ))}
             </dl>

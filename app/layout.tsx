@@ -5,6 +5,7 @@ import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
+  weight: ['400', '500', '600', '800'],
   subsets: ["latin"],
 });
 
@@ -29,11 +30,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <header className="flex justify-between items-center flex-nowrap gap-4 max-w-6xl mx-auto px-4 pt-10">
-          <Link href="/" className="font-bold text-lg">Books</Link>
-          <ul className="flex list-style-none justify-end items-center gap-2">
-            <li><Link href="/books">Book List</Link></li>
-            <li><Link href="/search">Search</Link></li>
-            <li><Link href="/stats">Stats</Link></li>
+          <Link href="/" className="font-bold text-4xl">Books</Link>
+          <ul className="flex list-style-none justify-end items-center gap-4">
+            <li><Link href="/books" className="font-semibold text-xl pb-1 border-b-[2px] border-transparent hover:border-zinc-500 hover:transition-colors hover:ease-in-out hover:duration-250 duration-250 transition-colors text-zinc-500">Book List</Link></li>
+            <li><Link href="/search" className="font-semibold text-xl pb-1 border-b-[2px] border-transparent hover:border-zinc-500 hover:transition-colors hover:ease-in-out hover:duration-250 duration-250 transition-colors text-zinc-500">Search</Link></li>
+            <li><Link href="/stats" className="font-semibold text-xl pb-1 border-b-[2px] border-transparent hover:border-zinc-500 hover:transition-colors hover:ease-in-out hover:duration-250 duration-250 transition-colors text-zinc-500">Stats</Link></li>
           </ul>
         </header>
         {children}

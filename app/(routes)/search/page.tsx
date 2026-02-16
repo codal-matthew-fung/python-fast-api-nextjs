@@ -1,8 +1,9 @@
-import { Data, Table } from "@/app/components/table"
+import { Table } from "@/app/components/table"
 import { Suspense } from "react"
 import { getData } from "@/app/utils"
 import { Endpoints } from "@/app/globals"
 import { SearchForm } from "@/app/components/search"
+import type {Data} from "@/app/types/data"
 
 interface SearchParams {
     field?: string,

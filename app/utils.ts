@@ -1,4 +1,4 @@
-import { Book, Data } from "./components/table";
+import type { Book, Data } from "@/app/types/data";
 import { Endpoints } from "./globals";
 
 export const getData = async ({params, endpoint}: {params: Record<string, string | undefined>, endpoint: Endpoints}) => {

@@ -1,43 +1,9 @@
 'use client';
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { TableProps, HandlePaginationParams, fieldName } from "@/app/types/data";
 
-export interface Data {
-    metadata: Metadata
-    books: Book[]
-}
-
-export interface Metadata {
-  total_count: number
-  total_pages: number
-  current_page: number
-  page_count: number
-  has_next_page: boolean
-  has_prev_page: boolean
-}
-
-export interface Book {
-  [k: string]: number | string
-  bookID: number
-  title: string
-  authors: string
-  average_rating: number
-  isbn: string
-  isbn13: number
-  language_code: string
-  num_pages: number
-  ratings_count: number
-  text_reviews_count: number
-  publication_date: string
-  publisher: string
-}
-
-interface TableProps {
-    data: Data
-}
-
-type HandlePaginationParams = {page: number}
-type fieldName = keyof Book
 export const Table = ({data}: TableProps) => {
     const searchParams = useSearchParams();
     const path = usePathname();
@@ -94,45 +60,49 @@ export const Table = ({data}: TableProps) => {
             )}
           </ul>
         </div>
-        <table className="rounded-sm w-full max-w-full">
-          <thead>
-            <tr className="bg-zinc-100 border-b-zinc-900 border-zinc-600">
+        <section className="max-w-6xl rounded-lg w-full overflow-x-auto">
+          <table className="rounded-lg w-full max-w-full">
+            <thead>
+              <tr className="bg-zinc-100 border-b-zinc-900 border-zinc-600">
+                <th className={`text-md px-8 py-4 font-semibold text-zinc-600 align-bottom text-left`}>Thumbnail</th>
+                {
+                  data?.books?.[0] && Object.keys(data?.books?.[0]).map((key) => {
+                      return (
+                          <th key={key} className={`text-md px-8 py-4 font-semibold text-zinc-600 align-bottom text-left`}>
+                          <button className={`text-left text-md font-semibold ${key.includes('isbn') ? 'uppercase' : 'capitalize' }${sort_by_field == key ? ' font-bold': ''}`} onClick={() => handleSort({fieldToSort: key, direction: sort_by == 'ASC' ? 'DESC' : 'ASC'})}>{key.replaceAll('_', ' ')} {sort_by_field === key && sort_by}</button></th>
+                      )
+                  })
+                }
+              </tr>
+            </thead>
+            <tbody>
               {
-                data?.books?.[0] && Object.keys(data?.books?.[0]).map((key) => {
-                    return (
-                        <th key={key} className={`text-md px-8 py-4 font-semibold text-zinc-600 align-bottom text-left`}>
-                        <button className={`${key.includes('isbn') ? 'uppercase' : 'capitalize' }${sort_by_field == key ? ' font-bold': ''}`} onClick={() => handleSort({fieldToSort: key, direction: sort_by == 'ASC' ? 'DESC' : 'ASC'})}>{key.replaceAll('_', ' ')} {sort_by_field === key && sort_by}</button></th>
-                    )
-                })
+                data.books.map((book, idx) => (
+                  <tr key={book.isbn} className={`${idx % 2 != 0 && idx !== 0 ? 'bg-zinc-50' : ''}`}>
+                    <td className="px-8 py-4"><Image src={`https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg`} alt={`Cover of the book titled, ${book.title}`} width={100} height={100} className="object-contain block" /></td>
+                    {
+                      Object.keys(book).map((key) => {
+                          let value = book[key]
+                          if (key === 'authors') {
+                              const authors = book.authors.split('/')
+                              if (authors.length > 2) {
+                                  value = authors[0] + ' et al' 
+                              } 
+                          }
+                          if (key === 'language_code') {
+                              value = book.language_code.toUpperCase()
+                          }
+                          return (
+                              <td key={`${book.isbn}-${key}`} className={`px-8 py-4 text-zinc-500 ${key === 'title' ? 'font-bold hover:underline' : 'font-normal'}`}>{key === 'title' ? <Link href={`/book/${book.isbn}`}>{value}</Link> : value}</td>
+                          )
+                      })
+                    }
+                  </tr>
+                ))
               }
-            </tr>
-          </thead>
-          <tbody>
-            {
-              data.books.map((book, idx) => (
-                <tr key={book.isbn} className={`${idx % 2 != 0 && idx !== 0 ? 'bg-zinc-50' : ''}`}>
-                  {
-                    Object.keys(book).map((key) => {
-                        let value = book[key]
-                        if (key === 'authors') {
-                            const authors = book.authors.split('/')
-                            if (authors.length > 2) {
-                                value = authors[0] + ' et al' 
-                            } 
-                        }
-                        if (key === 'language_code') {
-                            value = book.language_code.toUpperCase()
-                        }
-                        return (
-                            <td key={`${book.isbn}-${key}`} className={`px-8 py-4 text-zinc-500 ${key === 'title' ? 'font-bold hover:underline' : 'font-normal'}`}>{key === 'title' ? <Link href={`/book/${book.isbn}`}>{value}</Link> : value}</td>
-                        )
-                    })
-                  }
-                </tr>
-              ))
-            }
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        </section>
         </>
     )
 }
