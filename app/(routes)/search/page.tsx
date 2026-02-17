@@ -32,13 +32,11 @@ export default async function Search(props: SearchProps) {
   const data = (await getData({ params: params, endpoint: Endpoints.search })) as Data
 
   return (
-    <div className='max-w-6xl mx-auto px-4 py-20'>
-      <main className=''>
-        <SearchForm />
-        <Suspense fallback={<>Loading Data</>}>
-          <Grid books={data.books} metadata={data.metadata} />
-        </Suspense>
-      </main>
-    </div>
+    <>
+      <SearchForm />
+      <Suspense fallback={<>Loading Data</>}>
+        <Grid books={data.books} metadata={data.metadata} />
+      </Suspense>
+    </>
   )
 }

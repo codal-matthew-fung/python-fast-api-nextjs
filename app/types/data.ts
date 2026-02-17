@@ -1,6 +1,6 @@
 export interface Data {
-    metadata: Metadata
-    books: Book[]
+  metadata: Metadata
+  books: Book[]
 }
 
 export interface Metadata {
@@ -29,8 +29,26 @@ export interface Book {
 }
 
 export interface TableProps {
-    data: Data
+  data: Data
 }
 
-export type HandlePaginationParams = {page: number}
+export type HandlePaginationParams = { page: number }
 export type fieldName = keyof Book
+
+export interface Stats {
+  top_publishers: TopPublisher[]
+  average_page_count: number
+  average_rating: number
+  review_ratios: ReviewRatio[]
+}
+
+export interface TopPublisher {
+  book_count: number
+  publisher: string
+}
+
+export interface ReviewRatio {
+  publisher: string
+  total_books: number
+  avg_review_ratio: number
+}
