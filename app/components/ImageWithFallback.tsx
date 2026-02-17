@@ -1,13 +1,30 @@
-'use client';
-import {useState} from 'react';
-import Image from "next/image";
-import FallBackImage from "@/public/fallback-cover.jpg";
+'use client'
+import { useState } from 'react'
+import Image from 'next/image'
+import FallBackImage from '@/public/fallback-cover.jpg'
 interface ImageWithFallbackProps {
-    originalSrc: string,
-    altText: string
-    customClass?: string
+  originalSrc: string
+  width?: number
+  height?: number
+  altText: string
+  customClass?: string
 }
-export const ImageWithFallback = ({originalSrc, altText, customClass}: ImageWithFallbackProps) => {
-    const [imageSrc, setImageSrc] = useState(originalSrc)
-    return (<Image src={imageSrc} onError={() => setImageSrc(FallBackImage.src)} alt={altText} width={252} height={362} className={customClass} />)
+export const ImageWithFallback = ({
+  originalSrc,
+  width = 252,
+  height = 362,
+  altText,
+  customClass
+}: ImageWithFallbackProps) => {
+  const [imageSrc, setImageSrc] = useState(originalSrc)
+  return (
+    <Image
+      src={imageSrc}
+      onError={() => setImageSrc(FallBackImage.src)}
+      alt={altText}
+      width={width}
+      height={height}
+      className={customClass}
+    />
+  )
 }
