@@ -1,7 +1,7 @@
 import type { Book, Data } from "@/app/types/data";
 import { Endpoints } from "./globals";
 
-export const getData = async ({params, endpoint}: {params: Record<string, string | undefined>, endpoint: Endpoints}) => {
+export const getData = async ({params, endpoint}: {params: Record<string, string | undefined>, endpoint: string}) => {
     const fetchURL = new URL(endpoint);
     if (endpoint == Endpoints.book && Object.hasOwn(params, 'isbn')) {
       fetchURL.href = `${endpoint}/${params?.isbn}`
